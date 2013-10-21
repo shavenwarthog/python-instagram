@@ -12,8 +12,9 @@ def encode_string(value):
 
 
 class InstagramClientError(Exception):
-    def __init__(self, error_message):
+    def __init__(self, error_message, content=None):
         self.error_message = error_message
+        self.content = content
 
     def __str__(self):
         return self.error_message
@@ -96,7 +97,10 @@ def bind_method(**config):
             try:
                 content_obj = simplejson.loads(content)
             except ValueError:
-                raise InstagramClientError('Unable to parse response, not valid JSON.')
+                raise InstagramClientError(
+                    'Unable to parse response, not valid JSON.',
+                    content=content,
+                    )
 
             api_responses = []
             status_code = content_obj['meta']['code']
